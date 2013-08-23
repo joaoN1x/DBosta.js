@@ -68,29 +68,43 @@ remove all bands from Germany,
 
 Here's the main functions available.
 
-`total()` returns total collections in localStorage
+`.total()` returns total collections in localStorage
 
-`size()`  returns total bytes used, and predicted maximum allowed based on the browser brand
+`.size()`  returns total bytes used, and predicted maximum allowed based on the browser brand
 
-`tst()` returns current timestamp
+`.tst()` returns current timestamp
 
-`id()` generates unique hash identifier
+`.id()` generates unique hash identifier
 
-`compatibility()` checks if browser is compatible with localStorage usage
+`.compatibility()` checks if browser is compatible with localStorage usage
 
-`collection(objValue)` prepares collection usage
+`.collection(objValue)` prepares collection usage
 
-`register(objValue)` inserts records in collection
+`.register(objValue)` inserts records in collection
 
-`find(objValue)` searches records in collection
+`.find(objValue)` searches records in collection
 
-`change(objValue)` updates records in collection
+`.change(objValue)` updates records in collection
 
-`remove(objValue)` deletes records in collection
+`.remove(objValue)` deletes records in collection
 
-`clean(objValue)` removes collection
+`.clean(objValue)` removes collection
 
-`puf(objValue)` removes all collections
+`.puf(objValue)` removes all collections
+
+And the properties.
+
+`.vCollection()` default created collection
+
+`.vArray()` default array for collection
+
+`.vString()` default string for collection
+
+`.vDebug()` to see all those beautiful messages from console.log
+
+`.vTSTCheck()` interval general collections timestamp update in seconds, per example for server-side sync control
+
+`.vMaxsize()` still not being used
 
 ##Follow-up
 Next main feature will be builtin sorting and major next feature in a few months will be to work as well with IndexedDB.
