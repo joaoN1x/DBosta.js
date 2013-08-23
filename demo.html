@@ -1,0 +1,106 @@
+<html>
+  <head>
+    <title>DBosta DEMO</title>
+  </head>
+  <body>
+  
+	<script type="text/javascript" src="dbosta.js" charset="utf-8"></script>
+	<script type="text/javascript">
+  
+		//all records have automagically inserted 2 fields, tst and _id, _id is unique
+
+		//we dont want to see whats happenning on console
+		DBosta.vDebug = false;
+
+		//prepare collection to be used (creates if non existant)
+		DBosta.collection("styles");
+		
+		//add field and get id's
+		var objFields	= {"collection":"styles","fields":{"name":"Classic","description":"For deep insights"}}; //build first record to insert
+		var strClassic	= DBosta.register(objFields);
+		objFields		= {"collection":"styles","fields":{"name":"Hard Rock","description":"To shake yor head"}};
+		var strHardrock	= DBosta.register(objFields);
+			
+		DBosta.collection("bands");
+		objFields		= {"collection":"bands","fields":{"name":"Danger Danger","years":"1987-present","country":"USA","category":strHardrock}};
+		DBosta.register(objFields);
+		objFields		= {"collection":"bands","fields":{"name":"Reckless Love","years":"2001-present","country":"Finland","category":strHardrock}};
+		DBosta.register(objFields);
+		objFields		= {"collection":"bands","fields":{"name":"Ludwig van Beethoven","years":"1770-1827","country":"Germany","category":strClassic}};
+		DBosta.register(objFields);
+		objFields		= {"collection":"bands","fields":{"name":"Crash Diet","years":"2000-present","country":"Sweden","category":strHardrock}};
+		DBosta.register(objFields);
+		objFields		= {"collection":"bands","fields":{"name":"Motley Crue","years":"1980-present","country":"USA","category":strHardrock}};
+		DBosta.register(objFields);
+		objFields		= {"collection":"bands","fields":{"name":"Pink Cream 69","years":"1987-present","country":"Germany","category":strHardrock}};
+		DBosta.register(objFields);
+		objFields		= {"collection":"bands","fields":{"name":"Faithfull","years":"2001-2010","country":"Portugal","category":strHardrock}};
+		DBosta.register(objFields);
+		
+		//search fields with AND that are from USA and with Hard rock style
+		var objParams	= {"collection":"bands","$and":{"country":"USA","category":strHardrock}};
+		//execute search and get records returned
+		var objResult	= DBosta.find(objParams);
+		//go over returned records
+		console.log("USA Hard Rock bands =========================================|");
+		for (var key in objResult) {
+			console.log(" |___ " + objResult[key]._id + " | " + objResult[key].name + " | " + objResult[key].years);
+		}
+			
+		//get classic style OR german bands
+		objParams	= {"collection":"bands","$or":{"country":"Germany","category":strClassic}};
+		objResult	= DBosta.find(objParams);
+		console.log("German or Classic bands =====================================|");
+		for (var key in objResult) {
+			console.log(" |___ " + objResult[key]._id + " | " + objResult[key].name + " | " + objResult[key].years);
+		}
+		
+		//remove german and classic style bands, reutilizing previous objParams
+		DBosta.remove(objParams);
+
+		//update all bands USA for U.S.A.
+		objParams	= {"collection":"bands","$and":{"country":"USA"},"fields":{"country":"U.S.A."}};
+		DBosta.change(objParams);
+		
+		//list all available bands
+		objParams	= {"collection":"bands"};
+		objResult	= DBosta.find(objParams);
+		console.log("ALL left bands after removals and updates ===================|");
+		for (var key in objResult) {
+			console.log(" |___ " + objResult[key]._id + " | " + objResult[key].name + " from " + objResult[key].country + "  | " + objResult[key].years);
+		}
+		
+		//get total collections
+		console.log("Total " + DBosta.total() + " collections");
+		//get total bytes used
+		objResult = DBosta.size();
+		console.log(objResult.total + " bytes used");
+		
+		//uncoment below if you want DB to be fully clean in the end of this script
+		//DBosta.puf();  
+			
+	</script>
+  
+<!--
+
+ABOVE CONSOLE LOG RESULT SHOULD BE;
+ 
+ USA Hard Rock bands =========================================| 
+ |___ 74vz09cxs | Danger Danger | 1987-present 
+ |___ 74vz096nm | Motley Crue | 1980-present 
+German or Classic bands =====================================| 
+ |___ 74vz09arx | Ludwig van Beethoven | 1770-1827 
+ |___ 74vz098kc | Pink Cream 69 | 1987-present 
+ALL left bands after removals and updates ===================| 
+ |___ 74vz09cxs | Danger Danger from U.S.A.  | 1987-present 
+ |___ 74vz09bxb | Reckless Love from Finland  | 2001-present 
+ |___ 74vz098ip | Crash Diet from Sweden  | 2000-present 
+ |___ 74vz096nm | Motley Crue from U.S.A.  | 1980-present 
+ |___ 74vz096dw | Faithfull from Portugal  | 2001-2010 
+Total 4 collections 
+1756 bytes used
+
+-->
+
+  </body>
+</html>
