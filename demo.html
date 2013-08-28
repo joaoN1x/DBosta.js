@@ -28,13 +28,8 @@
 		DBosta.register(objFields);
 		objFields		= {"collection":"bands","fields":{"name":"Ludwig van Beethoven","years":"1770-1827","country":"Germany","category":strClassic}};
 		DBosta.register(objFields);
-		objFields		= {"collection":"bands","fields":{"name":"Crash Diet","years":"2000-present","country":"Sweden","category":strHardrock}};
-		DBosta.register(objFields);
-		objFields		= {"collection":"bands","fields":{"name":"Motley Crue","years":"1980-present","country":"USA","category":strHardrock}};
-		DBosta.register(objFields);
-		objFields		= {"collection":"bands","fields":{"name":"Pink Cream 69","years":"1987-present","country":"Germany","category":strHardrock}};
-		DBosta.register(objFields);
-		objFields		= {"collection":"bands","fields":{"name":"Faithfull","years":"2001-2010","country":"Portugal","category":strHardrock}};
+		//or you can add multiple fields at once
+		objFields		= {"collection":"bands","fields":[{"name":"Crash Diet","years":"2000-present","country":"Sweden","category":strHardrock},{"name":"Motley Crue","years":"1980-present","country":"USA","category":strHardrock},{"name":"Pink Cream 69","years":"1987-present","country":"Germany","category":strHardrock},{"name":"Faithfull","years":"2001-2010","country":"Portugal","category":strHardrock}]};
 		DBosta.register(objFields);
 		
 		//search fields with AND that are from USA and with Hard rock style

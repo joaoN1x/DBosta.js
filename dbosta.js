@@ -115,15 +115,17 @@ DBosta = {
 	//all records get two automagically added fields _id and tst
 	//_id: is a unique very short hash
 	//tst: is a timestamp in format YYYYMMDDHHMMSS
-	register		: function(objValue){
+	insert		: function(objValue){
 		this.vArray						= {};
+/*		
 		var tmpCollection				= "";
 		if ('collection' in objValue) {
 			tmpCollection				= objValue.collection;
 		}else {
 			tmpCollection				= this.vCollection;
 		}			
-		var strData 					= localStorage[tmpCollection];
+*/		
+		var strData 					= localStorage[objValue.collection];
 		var lastChar 					= strData.substr(1);	
 		var strValue					= JSON.stringify(objValue.fields);
 		var strId						= this.id();
@@ -136,12 +138,38 @@ DBosta = {
 			strResult					= strData.concat(strValue);
 		}else strResult = strValue;	
 		
-		localStorage[tmpCollection]		= strResult;
-		this.vArray						= JSON.parse("[" + localStorage[tmpCollection] + "]");
+		localStorage[objValue.collection]		= strResult;
+		this.vArray						= JSON.parse("[" + localStorage[objValue.collection] + "]");
 		
 		if ( this.vDebug ) console.log("[DBosta.MSG:137]: Inserted Record " + strId);
 		
 		return strId;
+	},
+	//handles actions for inserts
+	register		: function(objValue){
+		
+		var tmpCollection	= "";
+		
+		if ('collection' in objValue) {
+			tmpCollection				= objValue.collection;
+		}else {
+			tmpCollection				= this.vCollection;
+		}			
+		var objTmp 			= {};
+		var objResult		= {};
+		if ( typeof(objValue.fields[0]) !== "undefined" ){
+console.log("yes");			
+			for (var key in objValue.fields) {
+				objTmp	= {"collection":objValue.collection, "fields":objValue.fields[key]};
+				objResult	= this.insert(objTmp);
+			}			
+		}else {
+console.log("BOP");			
+			objTmp	= {"collection":objValue.collection, "fields":objValue.fields};
+			objResult	= this.insert(objTmp);
+		}
+		return objResult;
+		
 	},
 	//search records in collection
 	find			: function(objValue){
