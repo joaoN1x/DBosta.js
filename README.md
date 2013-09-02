@@ -8,7 +8,7 @@
 - standard Javascript support no need for frameworks
 - add/update/delete collections
 - add/update/delete records
-- find records with $and and $or operators
+- find records with $and and $or operators (searches words individually with '%*')
 - clear all collections at once
 - checks for browser localStorage compatibility before using it
 - generates unique id small hash and timestamp per record added
@@ -25,7 +25,7 @@ In your project you must guarantee that the collection to be used exists, all yo
   DBosta.collection("bands");
 ```
 
-afterwards you're able to add records, based in noSQL systems you can add fields on the structure at will, 
+afterwards you're able to add records(one or many at once), based in noSQL systems you can add fields on the structure at will, 
 ``` js 
       var objFields = { "collection":"bands", 
                         "fields":{"name":"Faithfull","years":"2001-2010","country":"Portugal"} 
