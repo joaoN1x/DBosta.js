@@ -158,19 +158,39 @@ DBosta = {
 		var objTmp 			= {};
 		var objResult		= {};
 		if ( typeof(objValue.fields[0]) !== "undefined" ){
-console.log("yes");			
+			
 			for (var key in objValue.fields) {
 				objTmp	= {"collection":objValue.collection, "fields":objValue.fields[key]};
 				objResult	= this.insert(objTmp);
 			}			
-		}else {
-console.log("BOP");			
+		}else {			
 			objTmp	= {"collection":objValue.collection, "fields":objValue.fields};
 			objResult	= this.insert(objTmp);
 		}
 		return objResult;
 		
 	},
+	cleanstring		: function (strText){
+		var rExps=[
+			{re:/[\xC0-\xC6]/g, ch:'A'},
+			{re:/[\xE0-\xE6]/g, ch:'a'},
+			{re:/[\xC8-\xCB]/g, ch:'E'},
+			{re:/[\xE8-\xEB]/g, ch:'e'},
+			{re:/[\xCC-\xCF]/g, ch:'I'},
+			{re:/[\xEC-\xEF]/g, ch:'i'},
+			{re:/[\xD2-\xD6]/g, ch:'O'},
+			{re:/[\xF2-\xF6]/g, ch:'o'},
+			{re:/[\xD9-\xDC]/g, ch:'U'},
+			{re:/[\xF9-\xFC]/g, ch:'u'},
+			{re:/[\xD1]/g, ch:'N'},
+			{re:/[\xF1]/g, ch:'n'} 
+		];
+		for(var i=0, len=rExps.length; i<len; i++)
+		strText	= strText.replace(rExps[i].re, rExps[i].ch);
+		
+		return strText;
+	},
+	
 	//search records in collection
 	find			: function(objValue){
 		this.vArray		= {};
@@ -180,7 +200,7 @@ console.log("BOP");
 			this.vArray = JSON.parse("[" + localStorage[objValue.collection] + "]");			
 		}else { 			
 			this.vArray = JSON.parse("[" + localStorage[this.vCollection] + "]"); 
-		}				
+		}			
 		if ( typeof(objValue.$and) !== "undefined" ){
 			objValue	= objValue.$and;
 			booOr		= false;
@@ -197,18 +217,24 @@ console.log("BOP");
 		if ( Object.keys(objValue).length > 0 ) {
 			var tmpArray	= [{}];
 			var booFound	= false;
-			for (var key in this.vArray) {		
-				if ( typeof(this.vArray[key]._id) !== "undefined" ) {						
+			
+			for (var key in this.vArray) {	
+				if ( typeof(this.vArray[key]._id) !== "undefined" ) {		
 					for (var yey in this.vArray[key]) {	
-						if ( yey in objValue ) {	
-							if ( this.vArray[key][yey].search(objValue[yey]) > -1 && booOr ) {
-								booFound = true;
-								break;
-							}else if ( this.vArray[key][yey].search(objValue[yey]) > -1 && booAnd ) {
-								booFound = true;
-							}else if ( this.vArray[key][yey].search(objValue[yey]) < 0 && booAnd ) {
-								booFound = false;
-								break;
+						if ( yey in objValue ) {
+							strObjValyey 	= this.cleanstring(objValue[yey]);
+							strVarrkyey		= this.cleanstring(this.vArray[key][yey]);
+							arrObjValyey	= strObjValyey.split("%*");
+							for (var zey in arrObjValyey) {
+								if ( strVarrkyey.search(arrObjValyey[zey]) > -1 && booOr ) {
+									booFound = true;
+									break;
+								}else if ( strVarrkyey.search(arrObjValyey[zey]) > -1 && booAnd ) {
+									booFound = true;
+								}else if ( strVarrkyey.search(arrObjValyey[zey]) < 0 && booAnd ) {
+									booFound = false;
+									break;
+								}
 							}
 						}
 					}
