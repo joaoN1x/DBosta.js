@@ -117,14 +117,6 @@ DBosta = {
 	//tst: is a timestamp in format YYYYMMDDHHMMSS
 	insert		: function(objValue){
 		this.vArray						= {};
-/*		
-		var tmpCollection				= "";
-		if ('collection' in objValue) {
-			tmpCollection				= objValue.collection;
-		}else {
-			tmpCollection				= this.vCollection;
-		}			
-*/		
 		var strData 					= localStorage[objValue.collection];
 		var lastChar 					= strData.substr(1);	
 		var strValue					= JSON.stringify(objValue.fields);
