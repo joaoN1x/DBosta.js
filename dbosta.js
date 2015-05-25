@@ -188,11 +188,14 @@ DBosta = {
 		this.vArray		= {};
 		var booAnd		= false;
 		var booOr		= true;
-		if ('collection' in objValue) {
-			this.vArray = JSON.parse("[" + localStorage[objValue.collection] + "]");			
-		}else { 			
-			this.vArray = JSON.parse("[" + localStorage[this.vCollection] + "]"); 
-		}			
+		var doColl		= "";
+		if ('collection' in objValue) doColl = objValue.collection;
+		else doColl = this.vCollection;
+		if ( typeof(localStorage[doColl]) === "undefined" ){
+			return this.Array;
+		}else {
+			this.vArray = JSON.parse("[" + localStorage[doColl] + "]");
+		}	
 		if ( typeof(objValue.$and) !== "undefined" ){
 			objValue	= objValue.$and;
 			booOr		= false;
